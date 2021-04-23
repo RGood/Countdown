@@ -56,6 +56,8 @@ func Mutate(options []*helpers.NumPathPair) [][]*helpers.NumPathPair {
 func CalcNums(options []*helpers.NumPathPair, target int, results *helpers.StringSet, getFirst bool, waitGroup *sync.WaitGroup) {
 	defer waitGroup.Done()
 
+	// Will not be accurate without using a mutex to prevent concurrent writes
+	// I chose not to since that would impact performance
 	RunCount++
 
 	if getFirst && results.Size() > 0 {
