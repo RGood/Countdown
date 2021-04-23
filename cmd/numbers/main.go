@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/RGood/countdown/pkg/helpers"
 	"github.com/RGood/countdown/pkg/numbers"
@@ -29,11 +28,10 @@ func main() {
 		copy(numsCopy, startingNums[:index])
 		otherNums := append(numsCopy, startingNums[index+1:]...)
 
+		wg.Add(1)
 		go numbers.CalcNums(value, fmt.Sprintf("%d", value), otherNums, target, results, getFirst, wg)
 	}
 
-	// Give waitgroups in the go processes a chance to increment
-	<-time.After(time.Millisecond * 100)
 	wg.Wait()
 
 	for _, result := range results.Values() {

@@ -10,7 +10,6 @@ import (
 var RunCount int = 0
 
 func CalcNums(curVal int, curPath string, options []int, target int, results *helpers.StringSet, getFirst bool, waitGroup *sync.WaitGroup) {
-	waitGroup.Add(1)
 	defer waitGroup.Done()
 
 	RunCount++
@@ -29,10 +28,14 @@ func CalcNums(curVal int, curPath string, options []int, target int, results *he
 		copy(numsCopy, options[:index])
 		new_options := append(numsCopy, options[index+1:]...)
 
+		waitGroup.Add(1)
 		go CalcNums(curVal*option, curPath+fmt.Sprintf(" * %d", option), new_options, target, results, getFirst, waitGroup)
+		waitGroup.Add(1)
 		go CalcNums(curVal+option, curPath+fmt.Sprintf(" + %d", option), new_options, target, results, getFirst, waitGroup)
+		waitGroup.Add(1)
 		go CalcNums(curVal-option, curPath+fmt.Sprintf(" - %d", option), new_options, target, results, getFirst, waitGroup)
 		if option != 0 && curVal%option == 0 {
+			waitGroup.Add(1)
 			go CalcNums(curVal/option, curPath+fmt.Sprintf(" / %d", option), new_options, target, results, getFirst, waitGroup)
 		}
 	}
