@@ -36,10 +36,16 @@ func Mutate(options []*helpers.NumPathPair) [][]*helpers.NumPathPair {
 
 			if npp1.Num-npp2.Num >= 0 {
 				mutations = append(mutations, append(GetAllExcluding(options, i1, i2), npp1.Sub(npp2)))
+			} else {
+				mutations = append(mutations, append(GetAllExcluding(options, i1, i2), npp2.Sub(npp1)))
 			}
 
 			if npp2.Num != 0 && npp1.Num%npp2.Num == 0 {
 				mutations = append(mutations, append(GetAllExcluding(options, i1, i2), npp1.Div(npp2)))
+			}
+
+			if npp1.Num != 0 && npp2.Num%npp1.Num == 0 {
+				mutations = append(mutations, append(GetAllExcluding(options, i1, i2), npp2.Div(npp1)))
 			}
 		}
 	}

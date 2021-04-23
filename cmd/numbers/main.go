@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/RGood/countdown/pkg/helpers"
@@ -28,6 +29,9 @@ func main() {
 	go numbers.CalcNums(startingNPPs, target, results, getFirst, wg)
 
 	wg.Wait()
+
+	fmt.Printf("Starting Numbers: %s\n", strings.Trim(strings.Join(strings.Fields(fmt.Sprint(startingNums)), ", "), "[]"))
+	fmt.Printf("Target: %d\n", target)
 
 	for _, result := range results.Values() {
 		println(result)
