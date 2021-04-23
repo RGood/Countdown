@@ -1,6 +1,9 @@
 package helpers
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type StringSet struct {
 	data  map[string]struct{}
@@ -55,4 +58,53 @@ func (s *StringSet) Size() int {
 	defer s.mutex.Unlock()
 
 	return len(s.data)
+}
+
+type NumPathPair struct {
+	Num  int
+	Path string
+}
+
+func GenNPPs(startingNums []int) []*NumPathPair {
+	npps := []*NumPathPair{}
+	for _, val := range startingNums {
+		npps = append(npps, NewNumPathPair(val))
+	}
+
+	return npps
+}
+
+func NewNumPathPair(num int) *NumPathPair {
+	return &NumPathPair{
+		Num:  num,
+		Path: fmt.Sprintf("%d", num),
+	}
+}
+
+func (npp *NumPathPair) Add(otherNpp *NumPathPair) *NumPathPair {
+	return &NumPathPair{
+		Num:  npp.Num + otherNpp.Num,
+		Path: fmt.Sprintf("(%s + %s)", npp.Path, otherNpp.Path),
+	}
+}
+
+func (npp *NumPathPair) Sub(otherNpp *NumPathPair) *NumPathPair {
+	return &NumPathPair{
+		Num:  npp.Num - otherNpp.Num,
+		Path: fmt.Sprintf("(%s - %s)", npp.Path, otherNpp.Path),
+	}
+}
+
+func (npp *NumPathPair) Mul(otherNpp *NumPathPair) *NumPathPair {
+	return &NumPathPair{
+		Num:  npp.Num * otherNpp.Num,
+		Path: fmt.Sprintf("(%s * %s)", npp.Path, otherNpp.Path),
+	}
+}
+
+func (npp *NumPathPair) Div(otherNpp *NumPathPair) *NumPathPair {
+	return &NumPathPair{
+		Num:  npp.Num / otherNpp.Num,
+		Path: fmt.Sprintf("(%s / %s)", npp.Path, otherNpp.Path),
+	}
 }
