@@ -11,22 +11,22 @@ import (
 )
 
 func main() {
-	wg := &sync.WaitGroup{}
-
 	// Numbers to play with
 	startingNums := []int{100, 75, 50, 25, 10, 9}
 
 	// Goal number
 	target := 819
 
+	// Should stop on first match?
+	getFirst := false
+
 	// Data struct containing results
 	results := helpers.NewStringSet()
 
-	// Stop on first match
-	getFirst := false
-
 	startTime := time.Now()
 	startingNPPs := helpers.GenNPPs(startingNums)
+
+	wg := &sync.WaitGroup{}
 	wg.Add(1)
 	go numbers.CalcNums(startingNPPs, target, results, getFirst, wg)
 
