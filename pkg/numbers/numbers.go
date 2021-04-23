@@ -20,7 +20,6 @@ func CalcNums(curVal int, curPath string, options []int, target int, results *he
 
 	if curVal == target {
 		results.Add(curPath)
-		return
 	}
 
 	for index, option := range options {
